@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Todo from './components/TodoComponents/Todo';
+//import Todo from './components/TodoComponents/Todo';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
 
@@ -13,16 +13,7 @@ class App extends React.Component {
     super();
     this.state = {
       toDos: [
-        {
-          task: 'Learn React',
-          id: Date.now(),
-          completed: false
-        },
-        {
-          task: 'Learn Animations',
-          id: Date.now(),
-          completed: false
-        }
+        
       ],
       task: '',
       id: Date.now(),
@@ -37,13 +28,14 @@ class App extends React.Component {
   submitHandler = event => {
     event.preventDefault();
     const newTask = {
-      task: this.state.task,
-      id: this.state.id,
+      task: this.state.value,
+      id: Date.now(),
       completed: false,
     };
+    //console.log(newTask);
 
     this.setState({
-      toDo: [...this.state.toDo, newTask]
+      toDos: [...this.state.toDos, newTask]
     });
   };
 
@@ -52,7 +44,7 @@ class App extends React.Component {
   };
 
   changeHandler = event => {
-    this.setState({ [event.target.task]: event.target.value });
+    this.setState({ value: event.target.value });
   };
 
   render() {
@@ -60,7 +52,6 @@ class App extends React.Component {
       <div className = 'todoApp'>
         <h2>Welcome to your Todo App!</h2>
         <div className = 'tobeDone'>
-          <Todo />
          <TodoList 
           toDos = {this.state.toDos}
          />
@@ -70,6 +61,7 @@ class App extends React.Component {
             change = {this.changeHandler}
             clear = {this.clearComplete}
             submit = {this.submitHandler}
+            items = {this.state}
           />
         </div>
       </div>
