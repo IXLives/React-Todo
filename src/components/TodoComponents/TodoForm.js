@@ -19,11 +19,15 @@ class TodoForm extends React.Component {
     this.setState({ toDoItem: '' });
   };
 
+  clearCompleted = e => {
+    e.preventDefault();
+    this.props.clearCompleted();
+  }
   
   
   render() {
     return (
-      <form onSubmit = {this.submitHandler}>
+      <form>
         <input 
           type = 'text' 
           placeholder = '...todo' 
@@ -31,7 +35,7 @@ class TodoForm extends React.Component {
           onChange = {this.changeHandler}
           value = {this.state.toDoItem} 
         />
-        <button>Add Task</button>
+        <button onClick = {this.submitHandler}>Add Task</button>
         <button onClick = {this.clearCompleted}>Clear Completed</button>
       </form>
     );
