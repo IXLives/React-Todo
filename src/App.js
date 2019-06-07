@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 //import Todo from './components/TodoComponents/Todo';
-import TodoForm from './components/TodoComponents/TodoForm';
-import TodoList from './components/TodoComponents/TodoList';
-
+import TodoForm from "./components/TodoComponents/TodoForm";
+import TodoList from "./components/TodoComponents/TodoList";
+import "./components/TodoComponents/Todo.css";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -12,61 +12,57 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      toDos: [
-        
-      ],
-      task: '',
-      id: Date.now(),
-      completed: false
+      toDos: [],
+      toDo: '',
     };
   }
 
-  selectItem = event => {
-    this.setState({completed: true});
+  selectItem = id => {
+    const newList = this.state.toDos.map(task => {
+      if (task.id === id) {
+        const newObj = {
+          ...task,
+          completed: !task.completed
+        };
+        return newObj;
+      } else {
+        return task;
+      }
+    });
+
+    this.setState({ toDos: newList });
   };
 
-  submitHandler = event => {
-    event.preventDefault();
-    const newTask = {
-      task: this.state.value,
+  addTask = newTask => {
+    const newTodoTask = {
+      task: newTask,
       id: Date.now(),
-      completed: false,
+      completed: false
     };
-    //console.log(newTask);
 
     this.setState({
-      toDos: [...this.state.toDos, newTask]
+      toDos: [...this.state.toDos, newTodoTask],
+      toDo: ''
     });
   };
 
-  clearComplete = event => {
-
-  };
-
-  changeHandler = event => {
-    this.setState({ value: event.target.value });
+  clearCompleted = (e) => {
+    e.preventDefault();
+    let toDos = this.state.toDos.filter(todo => !todo.completed);
+    this.setState({toDos});
   };
 
   render() {
     return (
-      <div className = 'todoApp'>
-        <h2>Welcome to your Todo App!</h2>
-        <div className = 'tobeDone'>
-         <TodoList 
-          toDos = {this.state.toDos}
-         />
+      <div className="todoApp">
+        <div className="header">
+          <h2>Welcome to your Todo App!</h2>
         </div>
-        <div className = 'inputForm'>
-          <TodoForm 
-            change = {this.changeHandler}
-            clear = {this.clearComplete}
-            submit = {this.submitHandler}
-            items = {this.state}
-          />
-        </div>
+        <TodoList toDos={this.state.toDos} selectItem={this.selectItem} />
+        <TodoForm toDos={this.state.toDos} addTask={this.addTask} clearCompleted={this.clearCompleted} />
       </div>
     );
   }
 }
 
-export default App; 
+export default App;
